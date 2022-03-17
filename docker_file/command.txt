@@ -1,0 +1,45 @@
+########################################
+## delete all of <none>:<none> images ##
+
+docker rmi $(docker images -f "dangling=true" -q)
+
+
+########################################
+## build docker image with dockerfile ## 
+
+docker build -t buildimage:0.0 .
+
+docker build --no-cache -t buildimage:1.0 . 		## not using cache ##
+
+docker build --cache-from jenkins -t my_jenkins:1.0 .	## use of specific cache ##
+
+
+################################################
+## Use CMD and ENTRYPOING without JSON format ##
+
+CMD echo test 		  ##  >>> CMD /bin/sh -c echo test
+
+ENTRYPOINT ./test.sh	  ##  >>> ENTRYPOINT -c ./test.sh
+
+
+## Using JSON form
+
+CMD ["echo", "test"]		
+ENTRYPOINT ["/bin/bash", "./test.sh"]
+
+
+################################################
+## Using &&, Reduce layers and image capacity ##
+
+FROM ubuntu:latest
+RUN mkdir /test
+RUN fallocate -l 100m /test/dummy
+RUN rm /test/dummy
+
+## ==>>
+
+FROM ubuntu:latest
+RUN mkdir /test && \
+fallocate -l 100m /test/dummy && \
+rm /test/dummy
+

@@ -16,6 +16,7 @@ sudo apt-get install \
 
 ## Add Docker’s official GPG key
 
+sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 ## set up the stable repository
